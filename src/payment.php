@@ -58,19 +58,32 @@
 
 		onCompletedPayment: function (response)
 		{
-			$.post( "/?wc-api=athm_success", function( data ) {
+			$.post( "/?wc-api=athm_success", {
+				id: '<?php echo $_GET['orderId']?>',
+				result: 'success'
+			}, function( data ) {
 				window.location = '<?php echo $_GET['redirectUrl'] ?>';
 			});
 		},
 
 		onCancelledPayment: function (response)
 		{
-			window.location = '/success';
+			$.post( "/?wc-api=athm_success", {
+				id: '<?php echo $_GET['orderId']?>',
+				result: 'error'
+			}, function( data ) {
+				history.back();
+			});
 		},
 
 		onExpiredPayment: function (response)
 		{
-			window.location = '/success';
+			$.post( "/?wc-api=athm_success", {
+				id: '<?php echo $_GET['orderId']?>',
+				result: 'error'
+			}, function( data ) {
+				history.back();
+			});
 		}
 	}
 </script>

@@ -95,7 +95,7 @@ function pwam_init_gateway_class() {
 					'title'       => 'Description',
 					'type'        => 'textarea',
 					'description' => 'This controls the description which the user sees during checkout.',
-					'default'     => 'Pay with your credit card via our super-cool payment gateway.',
+					'default'     => 'Pay with ATH Móvil.',
 				),
 				'testmode' => array(
 					'title'       => 'Test mode',
@@ -109,17 +109,9 @@ function pwam_init_gateway_class() {
 					'title'       => 'Test Public Key',
 					'type'        => 'text'
 				),
-				'test_private_key' => array(
-					'title'       => 'Test Private Key',
-					'type'        => 'password',
-				),
 				'public_key' => array(
 					'title'       => 'Live Public Key',
 					'type'        => 'text'
-				),
-				'private_key' => array(
-					'title'       => 'Live Private Key',
-					'type'        => 'password'
 				)
 			);
 
@@ -171,6 +163,7 @@ function pwam_init_gateway_class() {
 
 				'total' => $order->get_total(),
 				'privateKey' => $this->public_key,
+				'orderId' => $order->get_id(),
 				'redirectUrl' => urlencode($this->get_return_url( $order ))
 			);
 
@@ -190,39 +183,16 @@ function pwam_init_gateway_class() {
 		 * In case you need a webhook, like PayPal IPN etc
 		 */
 		public function webhook() {
-			error_log('success');
-			/*if( !is_wp_error( $response ) ) {
-
-				$body = json_decode( $response['body'], true );
-
-				// it could be different depending on your payment processor
-				if ( $body['response']['responseCode'] == 'APPROVED' ) {
-
-					// we received the payment
-					$order->payment_complete();
-					wc_reduce_stock_levels($order_id);
-
-					// some notes to customer (replace true with false to make it private)
-					$order->add_order_note( 'Hey, your order is paid! Thank you!', true );
-
-					// Empty cart
-					$woocommerce->cart->empty_cart();
-
-					// Redirect to the thank you page
-					return array(
-						'result' => 'success',
-						'redirect' => $this->get_return_url( $order )
-					);
-
-				} else {
-					wc_add_notice(  'Please try again.', 'error' );
-					return;
-				}
-
+			$order = wc_get_order( $_POST['id'] );
+			if ($_POST['result'] == 'success'){
+				$order->payment_complete();
+				wc_reduce_stock_levels($order->get_id());
 			} else {
-				wc_add_notice(  'Connection error.', 'error' );
+				wc_add_notice(  'Please try again.', 'error' );
 				return;
-			}*/
+			}
+
+			update_option('webhook_debug', $_POST);
 
 		}
 	}
