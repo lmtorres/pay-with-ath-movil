@@ -58,12 +58,12 @@
 
 		onCompletedPayment: function (response)
 		{
-			/*$.post( "/?wc-api=athm_success", {
+			$.post( "/?wc-api=athm_success", {
 				id: '<?php echo $_GET['orderId']?>',
 				result: 'success'
 			}, function( data ) {
 				window.location = '<?php echo $_GET['redirectUrl'] ?>';
-			});*/
+			});
 		},
 
 		onCancelledPayment: function (response)
