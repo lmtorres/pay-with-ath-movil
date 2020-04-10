@@ -107,7 +107,8 @@ function pwam_init_gateway_class() {
 				),
 				'test_public_key' => array(
 					'title'       => 'Test Public Key',
-					'type'        => 'text'
+					'type'        => 'text',
+					'default'	  => 'sandboxtoken01875617264'
 				),
 				'public_key' => array(
 					'title'       => 'Live Public Key',
