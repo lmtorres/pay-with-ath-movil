@@ -22,15 +22,15 @@
 
 	let ATHM_Checkout = {
 
-		env: 'sandbox',
-		publicToken: 'sandboxtoken01875617264',
+		env: '<?php echo $_GET['env']?>',
+		publicToken: '<?php echo $_GET['publicKey']?>',
 
 		timeout: 600,
 
 		theme: 'btn',
 		lang: 'en',
 
-		total: 1.00,
+		total: '<?php echo $_GET['total'] ?>',
 		/*tax: 1.00,
 		subtotal: 1.00,
 

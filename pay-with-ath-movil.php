@@ -162,9 +162,10 @@ function pwam_init_gateway_class() {
 			$args = array(
 
 				'total' => $order->get_total(),
-				'privateKey' => $this->public_key,
+				'publicKey' => $this->public_key,
 				'orderId' => $order->get_id(),
-				'redirectUrl' => urlencode($this->get_return_url( $order ))
+				'redirectUrl' => urlencode($this->get_return_url( $order )),
+				'env' => $this->testmode ? 'sandbox' : 'production'
 			);
 
 			/*
