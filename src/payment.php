@@ -5,7 +5,7 @@
 <div id="ATHMovil_Checkout_Button" style="display:none;"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	function getUrlVars()
+	/*function getUrlVars()
 	{
 		var vars = [], hash;
 		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -18,7 +18,7 @@
 		return vars;
 	}
 
-	console.log(getUrlVars());
+	console.log(getUrlVars());*/
 
 	let ATHM_Checkout = {
 
@@ -58,12 +58,12 @@
 
 		onCompletedPayment: function (response)
 		{
-			$.post( "/?wc-api=athm_success", {
+			/*$.post( "/?wc-api=athm_success", {
 				id: '<?php echo $_GET['orderId']?>',
 				result: 'success'
 			}, function( data ) {
 				window.location = '<?php echo $_GET['redirectUrl'] ?>';
-			});
+			});*/
 		},
 
 		onCancelledPayment: function (response)
@@ -92,7 +92,7 @@
 <script>
 	setTimeout(function(){
 		$('#ATHMovil_Checkout_Button').click();
-	}, 2000);
+	}, 1000);
 </script>
 
 </body>
