@@ -105,7 +105,7 @@ function pwam_init_gateway_class() {
 					'desc_tip'    => true,
 				),
 				'public_key' => array(
-					'title'       => 'Live Public Key',
+					'title'       => 'Public Key',
 					'type'        => 'text'
 				),
 				'redirect_path' => array(
