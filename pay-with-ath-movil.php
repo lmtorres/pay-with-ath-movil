@@ -26,10 +26,9 @@ add_action( 'plugins_loaded', 'pwam_init_gateway_class' );
 function pwam_init_gateway_class() {
 
 	class PWAM_Gateway extends WC_Payment_Gateway {
-		/**
-		 * @var string
-		 */
+
 		private $public_key;
+		private $redirect_path;
 
 		/**
 		 * Class constructor, more about it in Step 3
@@ -39,8 +38,8 @@ function pwam_init_gateway_class() {
 			$this->id = 'pwam'; // payment gateway plugin ID
 			$this->icon = ''; // URL of the icon that will be displayed on checkout page near your gateway name
 			$this->has_fields = true; // in case you need a custom credit card form
-			$this->method_title = 'Pay With ATHM Móvil Gateway';
-			$this->method_description = 'Description of PWAM payment gateway'; // will be displayed on the options page
+			$this->method_title = 'Pay With ATH Móvil Gateway';
+			$this->method_description = 'Accept ATH Móvil as a payment method.'; // will be displayed on the options page
 
 			// gateways can support subscriptions, refunds, saved payment methods,
 			// but in this tutorial we begin with simple payments
@@ -56,9 +55,9 @@ function pwam_init_gateway_class() {
 			$this->title = $this->get_option( 'title' );
 			$this->description = $this->get_option( 'description' );
 			$this->enabled = $this->get_option( 'enabled' );
+			$this->redirect_path = $this->get_option( 'redirect_path' );
 			$this->testmode = 'yes' === $this->get_option( 'testmode' );
-			$this->private_key = $this->testmode ? $this->get_option( 'test_private_key' ) : $this->get_option( 'private_key' );
-			$this->public_key = $this->testmode ? $this->get_option( 'test_public_key' ) : $this->get_option( 'public_key' );
+			$this->public_key = $this->testmode ? 'sandboxtoken01875617264' : $this->get_option( 'public_key' );
 
 			// This action hook saves the settings
 			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -105,14 +104,15 @@ function pwam_init_gateway_class() {
 					'default'     => 'yes',
 					'desc_tip'    => true,
 				),
-				'test_public_key' => array(
-					'title'       => 'Test Public Key',
-					'type'        => 'text',
-					'default'	  => 'sandboxtoken01875617264'
-				),
 				'public_key' => array(
 					'title'       => 'Live Public Key',
 					'type'        => 'text'
+				),
+				'redirect_path' => array(
+					'title'		  => 'Redirect Path (Advanced)',
+					'description' => 'Change this only if you know what you\'re doing',
+					'type'		  => 'text',
+					'default'  	  => '/wp-content/plugins/pay-with-ath-movil/src/payment.php'
 				)
 			);
 
@@ -172,7 +172,7 @@ function pwam_init_gateway_class() {
 			/*
 			 * Your API interaction could be built with wp_remote_post()
 			  */
-			$payment_page = add_query_arg( $args, '/wp-content/plugins/pay-with-ath-movil/src/payment.php' );
+			$payment_page = add_query_arg( $args, $this->redirect_path );
 
 			return array(
 				'result' => 'success',
